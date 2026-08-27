@@ -10,7 +10,8 @@
       "@db/*": ["./src/db/*"],
       "@middleware/*": ["./src/middleware/*"],
       "@routes/*": ["./src/routes/*"],
-      "@app-types/*": ["./src/types/*"]
+      "@app-types/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"]
     },
 
     // Environment Settings
@@ -47,5 +48,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
