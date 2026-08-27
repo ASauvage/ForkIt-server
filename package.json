@@ -1,0 +1,49 @@
+{
+  "name": "forkit-server",
+  "version": "1.0.0",
+  "description": "ForkIt server",
+  "homepage": "https://github.com/ASauvage/ForkIt-server#readme",
+  "bugs": {
+    "url": "https://github.com/ASauvage/ForkIt-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ASauvage/ForkIt-server.git"
+  },
+  "license": "MIT",
+  "author": "ASauvage",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/index.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.4.0",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.10",
+    "tsc-alias": "^1.9.2",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "overrides": {
+    "esbuild": "^0.25.0"
+  },
+  "allowScripts": {
+    "esbuild@0.18.20": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true
+  }
+}
