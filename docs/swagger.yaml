@@ -1,0 +1,996 @@
+openapi: 3.2.0
+info:
+  title: Swagger ForkIt API
+  description: API reference for ForkIt-server API
+  license:
+    name: MIT
+    url: https://github.com/ASauvage/ForkIt-server/blob/main/LICENSE
+  version: "1.0"
+servers:
+  - url: http://localhost:3000/api
+    description: Localhost server (3000)
+tags:
+  - name: ingredient
+    summary: Ingredient management operations
+    description: Ingredient management operations
+  - name: library
+    summary: Library management operations
+    description: Library management operations
+  - name: recipe
+    summary: Recipe management operations
+    description: Recipe management operations
+  - name: tag
+    summary: Tag management operations
+    description: Tag management operations
+paths:
+  /ingredients:
+    get:
+      tags:
+        - ingredient
+      summary: Find ingredients.
+      description: Find ingredients using filters.
+      operationId: getIngredients
+      parameters:
+        - name: search
+          in: query
+          description: Filter results by name.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Limit results.
+          required: false
+          schema:
+            type: number
+            default: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - ingredients
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  ingredients:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ingredient'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - ingredient
+      summary: Create ingredient.
+      description: Create ingredient.
+      operationId: postIngredient
+      requestBody:
+        description: Create a new ingredient
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - ingredient
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  ingredient:
+                    $ref: '#/components/schemas/Ingredient'
+        '403':
+          description: Invalid ingredient payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /ingredient/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - ingredient
+      summary: Find ingredient by ID.
+      description: Find ingredient by ID.
+      operationId: getIngredient
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - ingredient
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  ingredient:
+                    $ref: '#/components/schemas/Ingredient'
+        '404':
+          description: No tag found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - ingredient
+      summary: Update ingredient by ID.
+      description: Update ingredient by ID.
+      operationId: putIngredient
+      requestBody:
+        description: Update an ingredient
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - ingredient
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  ingredient:
+                    $ref: '#/components/schemas/Ingredient'
+        '403':
+          description: Invalid ingredient payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - ingredient
+      summary: Delete ingredient by ID.
+      description: Delete ingredient by ID.
+      operationId: deleteIngredient
+      responses:
+        '204':
+          description: Deleted (No Content)
+        '404':
+          description: No ingredient found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /libraries:
+    get:
+      tags:
+        - library
+      summary: Find libraries.
+      description: Find libraries using filters.
+      operationId: getLibraries
+      parameters:
+        - name: search
+          in: query
+          description: Filter results by name.
+          required: false
+          schema:
+            type: string
+        - name: owner_id
+          in: query
+          description: Filter results by owner_id.
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          description: Limit results.
+          required: false
+          schema:
+            type: number
+            default: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - libraries
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  libraries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Library'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - library
+      summary: Create library.
+      description: Create library.
+      operationId: postLibrary
+      requestBody:
+        description: Create a new library
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibraryInput'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - library
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  library:
+                    $ref: '#/components/schemas/Library'
+        '403':
+          description: Invalid library payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /libraries/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - library
+      summary: Find library by ID.
+      description: Find library by ID.
+      operationId: getLibrary
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - library
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  library:
+                    $ref: '#/components/schemas/Library'
+        '404':
+          description: No library found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - library
+      summary: Update library by ID.
+      description: Update library by ID.
+      operationId: putLibrary
+      requestBody:
+        description: Update a library
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibraryInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - library
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  library:
+                    $ref: '#/components/schemas/Library'
+        '403':
+          description: Invalid library payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - library
+      summary: Delete library by ID.
+      description: Delete library by ID.
+      operationId: deleteLibrary
+      responses:
+        '204':
+          description: Deleted (No Content)
+        '404':
+          description: No library found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /recipes:
+    get:
+      tags:
+        - recipe
+      summary: Find recipes.
+      description: Find recipes using filters.
+      operationId: getRecipes
+      parameters:
+        - name: search
+          in: query
+          description: Filter results by name.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Limit results.
+          required: false
+          schema:
+            type: number
+            default: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - recipes
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  recipes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Recipe'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - recipe
+      summary: Create recipe.
+      description: Create recipe.
+      operationId: postRecipe
+      requestBody:
+        description: Create a new recipe
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeInput'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - recipe
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  recipe:
+                    $ref: '#/components/schemas/Recipe'
+        '403':
+          description: Invalid recipe payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /recipes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - recipe
+      summary: Find recipe by ID.
+      description: Find recipe by ID.
+      operationId: getRecipe
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - recipe
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  recipe:
+                    $ref: '#/components/schemas/Recipe'
+        '404':
+          description: No recipe found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - recipe
+      summary: Update recipe by ID.
+      description: Update recipe by ID.
+      operationId: putRecipe
+      requestBody:
+        description: Update a recipe
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - recipe
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  recipe:
+                    $ref: '#/components/schemas/Recipe'
+        '403':
+          description: Invalid recipe payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - recipe
+      summary: Delete recipe by ID.
+      description: Delete recipe by ID.
+      operationId: deleteRecipe
+      responses:
+        '204':
+          description: Deleted (No Content)
+        '404':
+          description: No recipe found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /tags:
+    get:
+      tags:
+        - tag
+      summary: Find tags.
+      description: Find tags using filters.
+      operationId: getTags
+      parameters:
+        - name: search
+          in: query
+          description: Filter results by name.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Limit results.
+          required: false
+          schema:
+            type: number
+            default: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - tags
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  tags:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tag'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - tag
+      summary: Create tag.
+      description: Create tag.
+      operationId: postTag
+      requestBody:
+        description: Create a new tag
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagInput'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - tag
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  tag:
+                    $ref: '#/components/schemas/Tag'
+        '403':
+          description: Invalid tag payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /tags/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - tag
+      summary: Find tag by ID.
+      description: Find tag by ID.
+      operationId: getTag
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - tag
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  ingredient:
+                    $ref: '#/components/schemas/Tag'
+        '404':
+          description: No tag found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      tags:
+        - tag
+      summary: Update tag by ID.
+      description: Update tag by ID.
+      operationId: putTag
+      requestBody:
+        description: Update a tag
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - metadata
+                  - tag
+                properties:
+                  metadata:
+                    $ref: '#/components/schemas/Metadata'
+                  tag:
+                    $ref: '#/components/schemas/Tag'
+        '403':
+          description: Invalid tag payload
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - tag
+      summary: Delete tag by ID.
+      description: Delete tag by ID.
+      operationId: deleteTag
+      responses:
+        '204':
+          description: Deleted (No Content)
+        '404':
+          description: No tag found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - metadata
+        - error
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        error:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+            details:
+              type: string
+            stack:
+              type: string
+    Metadata:
+      type: object
+      required:
+        - request_id
+        - user_id
+        - current_time
+        - version
+        - request
+        - execution_time_ms
+      properties:
+        request_id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+          nullable: true
+        current_time:
+          type: object
+          required:
+            - value
+            - timestamp
+          properties:
+            value:
+              type: string
+              format: date-time
+            timestamp:
+              type: integer
+        version:
+          type: string
+        request:
+          type: object
+          required:
+            - method
+            - path
+          properties:
+            method:
+              type: string
+            path:
+              type: string
+        execution_time_ms:
+          type: number
+          format: float
+    Ingredient:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    IngredientInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    Library:
+      type: object
+      required:
+        - id
+        - name
+        - owner_id
+        - recipes
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        owner_id:
+          type: string
+          format: uuid
+        recipes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recipe'
+    LibraryInput:
+      type: object
+      required:
+        - name
+        - author_id
+      properties:
+        name:
+          type: string
+        author_id:
+          type: uuid
+    Recipe:
+      type: object
+      required:
+        - id
+        - name
+        - owner_id
+        - library_id
+        - created_at
+        - updated_at
+        - tags
+        - ingredients
+        - steps
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        owner_id:
+          type: string
+          format: uuid
+        library_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          nullable: true
+        image_url:
+          type: string
+          format: uri-reference
+          nullable: true
+        prep_time_min:
+          type: integer
+          nullable: true
+        cook_time_min:
+          type: integer
+          nullable: true
+        servings:
+          type: integer
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeIngredient'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeStep'
+    RecipeIngredient:
+      type: object
+      required:
+        - ingredient
+        - quantity
+      properties:
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+        quantity:
+          type: number
+          format: float
+        unit:
+          type: string
+          nullable: true
+          enum: [g, ml, tbsp, tsp, cup, pcs, pinch, oz, lbs]
+        notes:
+          type: string
+          nullable: true
+    RecipeStep:
+      type: object
+      required:
+        - index
+        - text
+      properties:
+        index:
+          type: integer
+        text:
+          type: string
+    RecipeInput:
+      type: object
+      required:
+        - name
+        - library_id
+        - owner_id
+        - ingredients
+      properties:
+        name:
+          type: string
+        library_id:
+          type: string
+          format: uuid
+        owner_id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          nullable: true
+        image_url:
+          type: string
+          format: uri
+          nullable: true
+        prep_time_min:
+          type: integer
+          nullable: true
+        cook_time_min:
+          type: integer
+          nullable: true
+        servings:
+          type: integer
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+            format: uuid
+          nullable: true
+        ingredients:
+          type: array
+          items:
+            type: object
+            required:
+              - ingredient
+              - quantity
+            properties:
+              ingredient:
+                type: string
+                format: uuid
+              quantity:
+                type: number
+              unit:
+                type: string
+                nullable: true
+                enum: [g, ml, tbsp, tsp, cup, pcs, pinch, oz, lbs]
+              notes:
+                type: string
+                nullable: true
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeStep'
+    Tag:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        color:
+          type: string
+          nullable: true
+    TagInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          nullable: true
