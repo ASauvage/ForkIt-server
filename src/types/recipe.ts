@@ -10,7 +10,16 @@ export interface RecipeIngredient {
 
 export interface RecipeStep {
     index: number;
-    instruction: string;
+    text: string;
+}
+
+export interface RecipeLight {
+    id: string;
+    name: string;
+    owner_id: string;
+    library_id: string;
+    description: string | null;
+    image_url: string | null;
 }
 
 export interface Recipe {

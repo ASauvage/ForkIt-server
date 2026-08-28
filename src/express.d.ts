@@ -1,4 +1,4 @@
-import { RequestMetadata } from '@types/metadata.ts'
+import { RequestMetadata } from '@app-types/metadata.ts'
 
 declare global {
     namespace Express {

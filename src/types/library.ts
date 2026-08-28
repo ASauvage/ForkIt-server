@@ -1,10 +1,10 @@
-import type { Recipe } from './recipe.js';
+import type { RecipeLight } from './recipe.js';
 
 export interface Library {
     id: string;
     name: string;
     owner_id: string;
-    recipes: Array<Recipe>;
+    recipes: Array<RecipeLight>;
 }
 
 /**

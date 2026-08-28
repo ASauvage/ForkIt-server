@@ -1,5 +1,5 @@
 export interface RequestMetadata {
-    request_id: string | null;
+    request_id: string;
     user_id: string | null;
     current_time: {
         value: string;
