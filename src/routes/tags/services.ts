@@ -25,7 +25,7 @@ export async function findTagById(id: string): Promise<Tag | null> {
         .from(tagsTable)
         .where(eq(tagsTable.id, id));
     
-        return (results[0] as Tag) ?? null;
+    return (results[0] as Tag) ?? null;
 }
 
 export async function createTag(input: CreateTagInput): Promise<Tag> {

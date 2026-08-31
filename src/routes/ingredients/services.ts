@@ -1,6 +1,6 @@
 import { db } from '@db/index.js';
-import { ingredientsTable } from '@db/schemas/ingredients.js';
 import { eq, asc, ilike, and, type SQL } from 'drizzle-orm';
+import { ingredientsTable } from '@db/schemas/ingredients.js';
 import type { Ingredient, CreateIngredientInput, UpdateIngredientInput, IngredientFilters } from '@app-types/ingredient.js';
 
 
@@ -25,7 +25,7 @@ export async function findIngredientById(id: string): Promise<Ingredient | null>
         .from(ingredientsTable)
         .where(eq(ingredientsTable.id, id));
     
-        return (results[0] as Ingredient) ?? null;
+    return (results[0] as Ingredient) ?? null;
 }
 
 export async function createIngredient(input: CreateIngredientInput): Promise<Ingredient> {
