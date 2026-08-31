@@ -10,11 +10,11 @@ export const recipesTable = pgTable('recipes', {
     library_id: uuid('library_id').notNull().references(() => librariesTable.id, { onDelete: 'cascade' }),
     description: text('description'),
     image_url: text('image_url'),
-    prepTimeMinutes: integer('prep_time_minutes'),
-    cookTimeMinutes: integer('cook_time_minutes'),
+    prep_time_min: integer('prep_time_min'),
+    cook_time_min: integer('cook_time_min'),
     servings: integer('servings'),
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at').defaultNow().notNull(),
+    created_at: timestamp('created_at').defaultNow().notNull(),
+    updated_at: timestamp('updated_at').defaultNow().notNull(),
     steps: jsonb('steps').$type<Array<RecipeStep>>().notNull()
 });
 
