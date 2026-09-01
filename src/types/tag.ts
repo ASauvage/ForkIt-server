@@ -4,7 +4,6 @@ export interface Tag {
     color: string;
 }
 
-
 /**
  * ---- Request DTOs ----
  */

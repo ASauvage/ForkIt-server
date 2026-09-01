@@ -1,8 +1,11 @@
 import type { RecipeLight } from './recipe.js';
 
-export interface Library {
+export interface LibraryLight {
     id: string;
     name: string;
+}
+
+export interface Library extends LibraryLight {
     owner_id: string;
     recipes: Array<RecipeLight>;
 }

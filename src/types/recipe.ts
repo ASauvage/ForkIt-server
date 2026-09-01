@@ -1,4 +1,5 @@
 import type { Ingredient } from './ingredient.js';
+import type { LibraryLight } from "./library.js";
 import type { Tag } from './tag.js';
 
 export interface RecipeIngredient {
@@ -16,19 +17,13 @@ export interface RecipeStep {
 export interface RecipeLight {
     id: string;
     name: string;
-    owner_id: string;
-    library_id: string;
     description: string | null;
     image_url: string | null;
 }
 
-export interface Recipe {
-    id: string;
-    name: string;
+export interface Recipe extends RecipeLight {
+    library: LibraryLight;
     owner_id: string;
-    library_id: string;
-    description: string | null;
-    image_url: string | null;
     prep_time_min: number | null;
     cook_time_min: number | null;
     servings: number | null;
@@ -68,9 +63,8 @@ export type UpdateRecipeInput = Partial<CreateRecipeInput>;
 export interface RecipeFilters {
     search?: string;
     library_id?: string;
-    servings?: number;
-    tags: Array<string>;
-    ingredients: Array<string>;
+    tags?: Array<string>;
+    ingredients?: Array<string>;
     sort?: 'name' | 'created_at' | 'updated_at';
     limit?: number;
 }
