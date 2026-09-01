@@ -4,6 +4,7 @@ import { ingredientsTable } from "./ingredients.js";
 import { librariesTable } from "./libraries.js";
 import { recipesTable } from "./recipes.js";
 import { tagsTable } from "./tags.js";
+import { usersTable } from "./users.js";
 
 export const recipesToIngredientsTable = pgTable('recipes_to_ingredients', {
     recipe_id: uuid('recipe_id').notNull().references(() => recipesTable.id, { onDelete: 'cascade' }),
@@ -19,14 +20,22 @@ export const recipesToTagsTable = pgTable('recipes_to_tags', {
 }, (t) => [primaryKey({ columns: [t.recipe_id, t.tag_id] })]);
 
 export const ingredientRelations = relations(ingredientsTable, ({ many }) => ({
-    recipes: many(recipesTable)
+    recipes: many(recipesToIngredientsTable)
 }));
 
-export const librariesRelations = relations(librariesTable, ({ many }) => ({
+export const librariesRelations = relations(librariesTable, ({ one, many }) => ({
+    owner: one(usersTable, {
+        fields: [librariesTable.owner_id],
+        references: [usersTable.id]
+    }),
     recipes: many(recipesTable)
 }));
 
 export const recipesRelations = relations(recipesTable, ({ one, many }) => ({
+    owner: one(usersTable, {
+        fields: [recipesTable.owner_id],
+        references: [usersTable.id]
+    }),
     recipes_to_tags: many(recipesToTagsTable),
     ingredients: many(recipesToIngredientsTable),
     library: one(librariesTable, {

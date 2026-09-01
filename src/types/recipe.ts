@@ -1,6 +1,7 @@
 import type { Ingredient } from './ingredient.js';
 import type { LibraryLight } from "./library.js";
 import type { Tag } from './tag.js';
+import type { UserLight } from "./user.js";
 
 export interface RecipeIngredient {
     ingredient: Ingredient;
@@ -23,7 +24,7 @@ export interface RecipeLight {
 
 export interface Recipe extends RecipeLight {
     library: LibraryLight;
-    owner_id: string;
+    owner: UserLight;
     prep_time_min: number | null;
     cook_time_min: number | null;
     servings: number | null;

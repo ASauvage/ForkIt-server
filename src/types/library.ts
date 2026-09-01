@@ -1,4 +1,5 @@
 import type { RecipeLight } from './recipe.js';
+import type { UserLight } from "./user.js";
 
 export interface LibraryLight {
     id: string;
@@ -6,7 +7,7 @@ export interface LibraryLight {
 }
 
 export interface Library extends LibraryLight {
-    owner_id: string;
+    owner: UserLight;
     recipes: Array<RecipeLight>;
 }
 
